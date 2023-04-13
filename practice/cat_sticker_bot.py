@@ -37,7 +37,7 @@ async def count_checkbox(message: types.Message):
 
 @dp.message_handler(content_types=types.ContentType.STICKER)
 async def send_sticker_id(message: types.Message):
-    global sticker_id
+    sticker_id = message.sticker.file_id
     await message.reply(f'The sticker ID is {sticker_id}')
 
 @dp.message_handler()
