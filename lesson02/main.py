@@ -1,13 +1,23 @@
 from aiogram import Bot, Dispatcher, executor, types
 from config import TOKEN
 
-bot = Bot(TOKEN)
-dp = Dispatcher(bot)
+dp = Dispatcher(Bot(TOKEN))
+
+HELP_COMMAND = """
+/start - start bot
+/help - command list
+"""
 
 
-@dp.message_handler()
-async def echo_uppercase(msg: types.Message):
-    await msg.answer(msg.text)
+@dp.message_handler(commands=['help'])
+async def help_command(msg: types.Message):
+    await msg.reply(HELP_COMMAND)
+
+
+@dp.message_handler(commands=['start'])
+async def start_command(msg: types.Message):
+    await msg.answer(text='Bot started')
+    await msg.delete()
 
 if __name__ == "__main__":
     executor.start_polling(dp)
