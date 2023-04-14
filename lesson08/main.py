@@ -14,7 +14,7 @@ kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 b1 = KeyboardButton('/help')
 b2 = KeyboardButton('/photo')
 b3 = KeyboardButton('/description')
-kb.add(b1).add(b2).add(b3)
+kb.add(b1).add(b2, b3)
 
 @dp.message_handler(commands=['help'])
 async def help_command(message: types.Message):
