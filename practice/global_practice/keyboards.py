@@ -6,7 +6,10 @@ b1 = KeyboardButton(text='/start')
 b2 = KeyboardButton(text='/help')
 b3 = KeyboardButton(text='/description')
 b4 = KeyboardButton(text='/photomenu')
-kb.add(b1, b2, b3, b4)
+b5 = KeyboardButton(text='/getemoji')
+b6 = KeyboardButton(text='/getsticker')
+b7 = KeyboardButton(text='/getrandomlocation')
+kb.add(b1, b2, b3).add(b5, b6, b7).add(b4)
 
 #photo menu
 kb2 = ReplyKeyboardMarkup(resize_keyboard=True)
