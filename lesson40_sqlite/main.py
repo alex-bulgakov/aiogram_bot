@@ -3,13 +3,18 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-from aiogram.dispatcher.filters import Text
+from sqlite import edit_profile, create_profile, db_start
+
 from config import TOKEN
 
 storage = MemoryStorage()
 bot = Bot(TOKEN)
 dp = Dispatcher(bot,
                 storage=storage)
+
+
+async def on_startup(_):
+    await db_start()
 
 
 class ProfileStatesGroup(StatesGroup):
@@ -29,6 +34,7 @@ def get_keyboard() -> ReplyKeyboardMarkup:
 async def cmd_start(message: types.Message) -> None:
     await message.answer('Welcome. Create profile',
                          reply_markup=get_keyboard())
+    await create_profile(user_id=message.from_user.id)
 
 
 @dp.message_handler(commands=['create'])
@@ -84,9 +90,9 @@ async def set_descr(message: types.Message, state: FSMContext) -> None:
         await bot.send_photo(message.from_user.id,
                              photo=data['photo'],
                              caption=f"Saved profile - {data['name']}, {data['age']}\n{data['descr']}")
-
+    await edit_profile(state, user_id=message.from_user.id)
     await state.finish()
 
 
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
+    executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
